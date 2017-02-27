@@ -150,7 +150,7 @@ public class EaseCommonUtils {
 	/**
      * set initial letter of according user's nickname( username if no nickname)
      * 
-     * @param username
+     * @param
      * @param user
      */
     public static void setUserInitialLetter(EaseUser user) {
@@ -209,7 +209,7 @@ public class EaseCommonUtils {
 
     /**
      * \~chinese
-     * ÅĞ¶ÏÊÇ·ñÊÇÃâ´òÈÅµÄÏûÏ¢,Èç¹ûÊÇappÖĞÓ¦¸Ã²»Òª¸øÓÃ»§ÌáÊ¾ĞÂÏûÏ¢
+     * ï¿½Ğ¶ï¿½ï¿½Ç·ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Åµï¿½ï¿½ï¿½Ï¢,ï¿½ï¿½ï¿½ï¿½ï¿½appï¿½ï¿½Ó¦ï¿½Ã²ï¿½Òªï¿½ï¿½ï¿½Ã»ï¿½ï¿½ï¿½Ê¾ï¿½ï¿½ï¿½ï¿½Ï¢
      * @param message
      * return
      *
@@ -225,7 +225,7 @@ public class EaseCommonUtils {
     /**
      * set initial letter of according user's nickname( username if no nickname)
      *
-     * @param username
+     * @param
      * @param user
      */
     public static void setAPPUserInitialLetter(User user) {

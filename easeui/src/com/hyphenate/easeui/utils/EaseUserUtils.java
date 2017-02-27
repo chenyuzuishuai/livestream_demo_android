@@ -88,7 +88,7 @@ public class EaseUserUtils {
     }
 
     /**
-     * 通过图片路径获取头像
+     *
      */
     public static void setAPPUserAvatarByPath(Context context, String path, ImageView imageView,String groupId) {
         int default_avatar = R.drawable.ease_default_avatar;
