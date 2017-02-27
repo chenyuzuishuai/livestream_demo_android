@@ -13,7 +13,7 @@
     <string name="attach_location">Местоположение</string>
     <string name="attach_file">Документ</string>
     <string name="attach_voice_call">Голосовой вызов</string>
-    <string name="user_card">Визитная карточка</string>
+    <string name="user_card">Вaизитная карточка</string>
     <string name="move_up_to_cancel">Провести вверх для отмены отправки</string>
     <string name="release_to_cancel">Отпустить палец для отмены отправки</string>
     <string name="send_fail">Ошибка при передаче сообщения,</string>
@@ -109,9 +109,9 @@
     <string name="agree">Согласен</string>
     <string name="Group_chat">Чат:</string>
     <string name="not_download">Не скачано:</string>
-	<string name="Please_enter_a_username">Пожалуйста, введите имя пользователя</string>
+    <string name="Please_enter_a_username">Пожалуйста, введите имя пользователя</string>
     <string name="is_down_please_wait">Пожалуйста подождите, видео загружается...</string>
     <string name="Exit_the_group_chat">Выйти из чата</string>
-    
-    
+
+
 </resources>
