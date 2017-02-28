@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -28,7 +29,8 @@ public class MyProfileFragment extends Fragment {
     //Spinner spinner;
     //@BindView(R.id.frame_rate)
     //TextView frameRateText;
-    @BindView(R.id.tv_username) TextView usernameView;
+    @BindView(R.id.tv_username)
+    TextView usernameView;
     @BindView(R.id.iv_avatar)
     ImageView mAvatar;
 
@@ -46,9 +48,9 @@ public class MyProfileFragment extends Fragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-       // usernameView.setText(EMClient.getInstance().getCurrentUser());
-        EaseUserUtils.setAPPUserAvatar(getContext(),EMClient.getInstance().getCurrentUser(),mAvatar);
-        EaseUserUtils.setAPPUserNick(EMClient.getInstance().getCurrentUser(),usernameView);
+        // usernameView.setText(EMClient.getInstance().getCurrentUser());
+        EaseUserUtils.setAPPUserAvatar(getContext(), EMClient.getInstance().getCurrentUser(), mAvatar);
+        EaseUserUtils.setAPPUserNick(EMClient.getInstance().getCurrentUser(), usernameView);
 
 
         //liveSettings = new LiveSettings(getContext());
@@ -73,7 +75,8 @@ public class MyProfileFragment extends Fragment {
 
     }
 
-    @OnClick(R.id.btn_logout) void onLogout(){
+    @OnClick(R.id.btn_logout)
+    void onLogout() {
         LiveHelper.getInstance().logout(false, new EMCallBack() {
             @Override
             public void onSuccess() {

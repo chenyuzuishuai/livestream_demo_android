@@ -44,8 +44,9 @@ public class RegisterActivity extends BaseActivity {
     @BindView(R.id.toolbar)
     Toolbar toolbar;
     private static final String TAG = RegisterActivity.class.getSimpleName();
-    String username, usernick,password;
-   ProgressDialog pd;
+    String username, usernick, password;
+    ProgressDialog pd;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -62,7 +63,7 @@ public class RegisterActivity extends BaseActivity {
             @Override
             public void onClick(View v) {
                 username = etUsername.getText().toString().trim();
-                usernick= etUserNick.getText().toString().trim();
+                usernick = etUserNick.getText().toString().trim();
                 password = etPassword.getText().toString().trim();
                 pd = new ProgressDialog(RegisterActivity.this);
                 String confirm_pwd = etPasswordConfirm.getText().toString().trim();
@@ -100,6 +101,7 @@ public class RegisterActivity extends BaseActivity {
             }
         });
     }
+
     /**
      * 注册自己的服务器账号
      */
@@ -108,10 +110,10 @@ public class RegisterActivity extends BaseActivity {
             @Override
             public void onSuccess(String s) {
                 if (s != null) {
-                    Log.e(TAG,"register,s="+s);
+                    Log.e(TAG, "register,s=" + s);
                     Result result = ResultUtils.getResultFromJson(s, null);
                     if (result != null) {
-                        Log.e(TAG,"register,result="+result);
+                        Log.e(TAG, "register,result=" + result);
                         if (result.isRetMsg()) {
                             //注册完毕注册环信服务器
                             registerEMService();
@@ -137,7 +139,7 @@ public class RegisterActivity extends BaseActivity {
             public void onError(String error) {
                 pd.dismiss();
                 CommonUtils.showShortToast(R.string.Registration_failed);
-                L.e(TAG,"error="+error);
+                L.e(TAG, "error=" + error);
             }
         });
     }
@@ -186,16 +188,17 @@ public class RegisterActivity extends BaseActivity {
         }).start();
 
     }
+
     private void unResisterAppService() {
         NetDao.unregister(this, username, new OnCompleteListener<String>() {
             @Override
             public void onSuccess(String result) {
-                Log.e(TAG,"result="+result);
+                Log.e(TAG, "result=" + result);
             }
 
             @Override
             public void onError(String error) {
-                L.e(TAG,"error="+error);
+                L.e(TAG, "error=" + error);
             }
         });
     }
