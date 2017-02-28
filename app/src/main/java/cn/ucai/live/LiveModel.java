@@ -294,17 +294,17 @@ public class LiveModel {
 
     public boolean saveAppContactList(List<User> contactList) {
         UserDao dao = new UserDao(context);
-        dao.saveAppContactList(contactList);
+        dao.saveAPPContactList(contactList);
         return true;
     }
 
     public Map<String, User> getAppContactList() {
         UserDao dao = new UserDao(context);
-        return dao.getAppContactList();
+        return dao.getAPPContactList();
     }
 
     public void saveAppContact(User user){
         UserDao dao = new UserDao(context);
-        dao.saveAppContact(user);
+        dao.saveAPPContact(user);
     }
 }
