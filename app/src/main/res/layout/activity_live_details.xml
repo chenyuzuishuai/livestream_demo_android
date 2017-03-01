@@ -150,7 +150,7 @@
 
     </RelativeLayout>
     <RelativeLayout
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="300dp"
         android:id="@+id/message_container"
         android:layout_alignParentBottom="true"
