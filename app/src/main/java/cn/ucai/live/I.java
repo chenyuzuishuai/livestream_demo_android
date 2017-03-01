@@ -313,7 +313,10 @@ public interface I {
      * 客户端发送的用户给主播赠送礼物的请求
      */
     String REQUEST_GET_ALL_CHATROOM = "live/getAllChatRoom";
-
+    /**
+     * 客户端发送的创建直播室
+     */
+    String REQUEST_CREATE_CHATOROOM = "live/createChatRoom";
     int REQUESTCODE_PICK = 1;
     int REQUESTCODE_CUTTING = 2;
     int REQUESTCODE_MEMBER = 3;
