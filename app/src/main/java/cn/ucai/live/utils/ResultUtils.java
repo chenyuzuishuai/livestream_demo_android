@@ -16,6 +16,9 @@ import java.util.List;
 import cn.ucai.live.I;
 import cn.ucai.live.data.model.Result;
 
+import static android.R.attr.id;
+import static com.xiaomi.push.service.y.s;
+
 
 /**
  * Created by clawpo on 2016/9/21.
@@ -54,21 +57,27 @@ public class ResultUtils {
         return  null;
     }
 
-    public static <T> List<T> getEMResultResultFromJson(String jsonStr,Class<T> clazz){
+    public static  String getEMResultResultFromJson(String jsonStr){
         try {
             JSONObject jsonObject = new JSONObject(jsonStr);
-            if (!jsonObject.isNull("data")){
-                JSONArray array = jsonObject.getJSONArray("data");
-                if (array!=null){
-                    List<T> list = new ArrayList<T>();
-                    for (int i=0;i<array.length();i++){
-                        JSONObject jsonGroupAvatar = array.getJSONObject(i);
-                        T ga = new Gson().fromJson(jsonGroupAvatar.toString(),clazz);
-                        list.add(ga);
-                    }
+            if (!jsonObject.isNull("id")){
+                JSONObject data = jsonObject.getJSONObject("data");
+                if (!data.isNull("id")){
+                    String id = data.getString("id");
+                    return id;
                 }
-                return null;
             }
+//                JSONArray array = jsonObject.getJSONArray("data");
+//                if (array!=null){
+//                    List<T> list = new ArrayList<T>();
+//                    for (int i=0;i<array.length();i++){
+//                        JSONObject jsonGroupAvatar = array.getJSONObject(i);
+//                        T ga = new Gson().fromJson(jsonGroupAvatar.toString(),clazz);
+//                        list.add(ga);
+//                    }
+//                }
+//                return null;
+//            }
         } catch (JSONException e) {
             e.printStackTrace();
         }

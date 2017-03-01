@@ -110,7 +110,18 @@ public class StartLiveActivity extends LiveBaseActivity
         EaseUserUtils.setAPPUserAvatar(StartLiveActivity.this, EMClient.getInstance().getCurrentUser(),
                 userAvatar);
         EaseUserUtils.setAPPUserNick(EMClient.getInstance().getCurrentUser(), usernameView);
-        initEnv();
+        String id = getIntent().getStringExtra("liveId");
+        if (id != null && id.equals("")) {
+            liveId = id;
+            chatroomId = id;
+            initEnv();
+        } else {
+            pd = new ProgressDialog(StartLiveActivity.this);
+            pd.setMessage("创建直播...骚等");
+            pd.show();
+            CreateLive();
+        }
+        // initEnv();
     }
 
     public void initEnv() {
@@ -196,15 +207,12 @@ public class StartLiveActivity extends LiveBaseActivity
      */
     @OnClick(R.id.btn_start)
     void startLive() {
-        pd = new ProgressDialog(StartLiveActivity.this);
-        pd.setMessage("创建直播...骚等");
-        pd.show();
-        CreateLive();
         //demo为了测试方便，只有指定的账号才能开启直播
-        if (liveId == null) {
-
+        if (liveId == null && liveId.equals("")) {
+            CommonUtils.showShortToast("获取直播数据失败");
             return;
         }
+        startLiveByChatRoom();
     }
 
     private void startLiveByChatRoom() {
@@ -237,13 +245,13 @@ public class StartLiveActivity extends LiveBaseActivity
                 boolean success = false;
                 pd.dismiss();
                 if (s != null) {
-                    List<String> ids = ResultUtils.getEMResultResultFromJson(s, String.class);
-                    if (ids != null && ids.size() > 0) {
-                        initLive(ids.get(0));
-                        startLiveByChatRoom();
+                    String id = ResultUtils.getEMResultResultFromJson(s);
+                    if (id != null) {
+                        success = true;
+                        initLive(id);
                     }
                 }
-                if (!success){
+                if (!success) {
                     pd.dismiss();
                     CommonUtils.showShortToast("创建直播失败!");
                 }
