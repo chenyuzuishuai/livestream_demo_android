@@ -35,6 +35,7 @@ import com.hyphenate.chat.EMChatRoom;
 import com.hyphenate.chat.EMClient;
 import com.hyphenate.chat.EMCursorResult;
 import com.hyphenate.chat.EMGroupInfo;
+import com.hyphenate.easeui.utils.EaseUserUtils;
 import com.hyphenate.exceptions.HyphenateException;
 
 import cn.ucai.live.R;
@@ -45,6 +46,7 @@ import java.util.List;
 import java.util.Random;
 import java.util.zip.Inflater;
 
+import static android.media.CamcorderProfile.get;
 import static java.security.AccessController.getContext;
 
 /**
@@ -250,7 +252,7 @@ public class LiveListFragment extends Fragment {
             liveRoom.setAudienceNum(room.getAffiliationsCount());
             liveRoom.setId(room.getId());
             liveRoom.setChatroomId(room.getId());
-            liveRoom.setCover(R.drawable.test1);
+            liveRoom.setCover(EaseUserUtils.getAPPUserInfo(room.getOwner()).getAvatar());
             liveRoom.setAnchorId(room.getOwner());
             roomList.add(liveRoom);
         }
@@ -276,8 +278,15 @@ public class LiveListFragment extends Fragment {
                 public void onClick(View v) {
                     final int position = holder.getAdapterPosition();
                     if (position == RecyclerView.NO_POSITION) return;
-                    context.startActivity(new Intent(context, LiveDetailsActivity.class)
-                            .putExtra("liveroom", liveRoomList.get(position)));
+                  LiveRoom room = liveRoomList.get(position);
+                    if (room.getAnchorId().equals(EMClient.getInstance().getCurrentUser())) {
+                        context.startActivity(new Intent(context,StartLiveActivity.class)
+                        .putExtra("LiveId",room.getId()));
+                    }else {
+                        context.startActivity(new Intent(context, LiveDetailsActivity.class)
+                                .putExtra("liveroom", liveRoomList.get(position)));
+                    }
+
                 }
             });
             return holder;

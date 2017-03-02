@@ -19,6 +19,7 @@ import com.hyphenate.EMValueCallBack;
 import com.hyphenate.chat.EMChatRoom;
 import com.hyphenate.chat.EMClient;
 import com.hyphenate.easeui.controller.EaseUI;
+import com.hyphenate.easeui.utils.EaseUserUtils;
 import com.ucloud.common.logger.L;
 import com.ucloud.player.widget.v2.UVideoView;
 import java.util.Random;
@@ -46,9 +47,9 @@ public class LiveDetailsActivity extends LiveBaseActivity implements UVideoView.
         LiveRoom liveRoom = getIntent().getParcelableExtra("liveroom");
         liveId = liveRoom.getId();
         chatroomId = liveRoom.getChatroomId();
-        int coverRes = liveRoom.getCover();
-        coverView.setImageResource(coverRes);
-
+        String coverRes = liveRoom.getCover();
+       // coverView.setImageResource(coverRes);
+        EaseUserUtils.setAPPUserAvatar(this,EMClient.getInstance().getCurrentUser(),coverView);
         anchorId = liveRoom.getAnchorId();
         usernameView.setText(anchorId);
 
