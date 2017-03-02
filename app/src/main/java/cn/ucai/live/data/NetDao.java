@@ -199,13 +199,25 @@ public class NetDao {
      */
     public static void createLive(Context context, User user, OnCompleteListener<String> listener){
         OkHttpUtils<String> utils = new OkHttpUtils<>(context);
-        utils.setRequestUrl(I.REQUEST_CREATE_CHATOROOM)
+        utils.setRequestUrl(I.REQUEST_CREATE_CHATROOM)
                 .addParam("auth","1IFgE")
                 .addParam("name",user.getMUserNick()+"的直播间")
                 .addParam("description",user.getMUserNick()+"的瓜皮直播")
                 .addParam("ower",user.getMUserName())
                 .addParam("maxusers","300")
                 .addParam("members",user.getMUserName())
+                .targetClass(String.class)
+                .execute(listener);
+    }
+
+    /**
+     * 关闭直播间
+     */
+    public static void removeLive(Context context, String chatroomId,OnCompleteListener<String> listener){
+        OkHttpUtils<String> utils = new OkHttpUtils<>(context);
+        utils.setRequestUrl(I.REQUEST_DELETE_CHATROOM)
+                .addParam("auth","1IFgE")
+                .addParam("chatRoomId",chatroomId)
                 .targetClass(String.class)
                 .execute(listener);
     }

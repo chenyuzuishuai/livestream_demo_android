@@ -43,6 +43,7 @@ import com.hyphenate.easeui.domain.User;
 import com.hyphenate.easeui.utils.EaseUserUtils;
 import com.hyphenate.easeui.widget.EaseAlertDialog;
 import com.hyphenate.easeui.widget.EaseImageView;
+import com.ucloud.common.logger.L;
 import com.ucloud.common.util.DeviceUtils;
 import com.ucloud.live.UEasyStreaming;
 import com.ucloud.live.UStreamingProfile;
@@ -282,7 +283,22 @@ public class StartLiveActivity extends LiveBaseActivity
             finish();
             return;
         }
+        removeLive();
         showConfirmCloseLayout();
+    }
+
+    private void removeLive() {
+        NetDao.removeLive(this, chatroomId, new OnCompleteListener<String>() {
+            @Override
+            public void onSuccess(String s) {
+                L.e(TAG,"s="+s);
+            }
+
+            @Override
+            public void onError(String error) {
+
+            }
+        });
     }
 
     @OnClick(R.id.img_bt_switch_voice)

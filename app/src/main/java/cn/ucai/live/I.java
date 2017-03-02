@@ -316,7 +316,11 @@ public interface I {
     /**
      * 客户端发送的创建直播室
      */
-    String REQUEST_CREATE_CHATOROOM = "live/createChatRoom";
+    String REQUEST_CREATE_CHATROOM = "live/createChatRoom";
+    /**
+     * 关闭直播间
+     */
+    String REQUEST_DELETE_CHATROOM = "live/deleteChatRoom";
     int REQUESTCODE_PICK = 1;
     int REQUESTCODE_CUTTING = 2;
     int REQUESTCODE_MEMBER = 3;
