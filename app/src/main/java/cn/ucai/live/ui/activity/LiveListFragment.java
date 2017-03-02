@@ -208,8 +208,7 @@ public class LiveListFragment extends Fragment {
                             }
                             if (isFirstLoading) {
                                 isFirstLoading = false;
-                                mAdapter = new LiveAdapter(getContext(), getLiveRoomList(chatRoomList));
-                                recyclerView.setAdapter(mAdapter);
+                                mAdapter.initData(getLiveRoomList(chatRoomList));
 //                    listView.setAdapter(adapter);
 
                             } else {
@@ -217,7 +216,7 @@ public class LiveListFragment extends Fragment {
                                     hasMoreData = false;
                                     footLoadingLayout.setVisibility(View.VISIBLE);
                                     footLoadingPB.setVisibility(View.GONE);
-                                    footLoadingText.setText("No more data");
+                                    footLoadingText.setText("没有更多数据");
                                 }
                                 mAdapter.notifyDataSetChanged();
                             }
@@ -250,7 +249,7 @@ public class LiveListFragment extends Fragment {
             LiveRoom liveRoom = new LiveRoom();
             liveRoom.setName(room.getName());
             liveRoom.setAudienceNum(room.getAffiliationsCount());
-            liveRoom.setId(room.getId());
+            liveRoom.setId(room.getOwner());
             liveRoom.setChatroomId(room.getId());
             liveRoom.setCover(EaseUserUtils.getAPPUserInfo(room.getOwner()).getAvatar());
             liveRoom.setAnchorId(room.getOwner());
@@ -281,7 +280,7 @@ public class LiveListFragment extends Fragment {
                   LiveRoom room = liveRoomList.get(position);
                     if (room.getAnchorId().equals(EMClient.getInstance().getCurrentUser())) {
                         context.startActivity(new Intent(context,StartLiveActivity.class)
-                        .putExtra("LiveId",room.getId()));
+                        .putExtra("liveroom",room.getId()));
                     }else {
                         context.startActivity(new Intent(context, LiveDetailsActivity.class)
                                 .putExtra("liveroom", liveRoomList.get(position)));
@@ -306,6 +305,13 @@ public class LiveListFragment extends Fragment {
         @Override
         public int getItemCount() {
             return liveRoomList.size();
+        }
+
+        public void initData(List<LiveRoom> liveRoomList) {
+            if (liveRoomList!=null)
+                liveRoomList.clear();
+            liveRoomList.addAll(liveRoomList);
+            notifyDataSetChanged();
         }
     }
 

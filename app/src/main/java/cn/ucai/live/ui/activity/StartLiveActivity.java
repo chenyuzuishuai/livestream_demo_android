@@ -115,18 +115,15 @@ public class StartLiveActivity extends LiveBaseActivity
         EaseUserUtils.setAPPUserAvatar(StartLiveActivity.this, EMClient.getInstance().getCurrentUser(),
                 userAvatar);
         EaseUserUtils.setAPPUserNick(EMClient.getInstance().getCurrentUser(), usernameView);
-        String id = getIntent().getStringExtra("liveId");
-        if (id != null && id.equals("")) {
-            liveId = id;
-            chatroomId = id;
-            initEnv();
-        } else {
-            pd = new ProgressDialog(StartLiveActivity.this);
-            pd.setMessage("创建直播...骚等");
-            pd.show();
-            CreateLive();
+        LiveRoom liveRoom = getIntent().getParcelableExtra("liveroom");
+        if (liveRoom!=null){
+            liveId = liveRoom.getId();
+            chatroomId = liveRoom.getChatroomId();
+        }else {
+            liveId = EMClient.getInstance().getCurrentUser();
         }
-        // initEnv();
+
+         initEnv();
     }
 
     public void initEnv() {
