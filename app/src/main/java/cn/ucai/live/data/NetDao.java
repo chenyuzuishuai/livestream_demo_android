@@ -221,4 +221,14 @@ public class NetDao {
                 .targetClass(String.class)
                 .execute(listener);
     }
+
+    /**
+     * 下载礼物数据
+     */
+    public static void loadAllGift(Context context,OnCompleteListener<String> listener){
+        OkHttpUtils<String> utils = new OkHttpUtils<>(context);
+        utils.setRequestUrl(I.REQUEST_GIVING_GIFT)
+                .targetClass(String.class)
+                .execute(listener);
+    }
 }
