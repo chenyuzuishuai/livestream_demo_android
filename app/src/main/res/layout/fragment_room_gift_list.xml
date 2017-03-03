@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+             android:layout_width="match_parent"
+             android:layout_height="wrap_content"
+             android:layout_gravity="bottom"
+    >
+   <LinearLayout
+       android:layout_width="match_parent"
+       android:layout_height="wrap_content"
+       android:orientation="vertical"
+       android:gravity="center_horizontal"
+       android:background="@color/color_progress">
+       <android.support.v7.widget.RecyclerView
+           android:id="@+id/rv_gift"
+           android:layout_width="match_parent"
+           android:layout_height="wrap_content">
+
+       </android.support.v7.widget.RecyclerView>
+
+       <RelativeLayout
+           android:layout_width="match_parent"
+           android:layout_height="40dp"
+           android:gravity="center">
+           <TextView
+               android:id="@+id/tv_my_bill"
+               android:layout_width="wrap_content"
+               android:layout_height="wrap_content"
+               android:layout_alignParentLeft="true"
+               android:textSize="15sp"
+               android:text="我的账单"
+               android:padding="10dp"
+               android:textColor="@color/black_deep"/>
+           <TextView
+               android:id="@+id/tv_recharge"
+               android:layout_width="wrap_content"
+               android:layout_height="wrap_content"
+               android:layout_alignParentRight="true"
+               android:text="充值"
+               android:textSize="15sp"
+               android:padding="10dp"
+               android:textColor="@color/common_red"/>
+       </RelativeLayout>
+   </LinearLayout>
+</FrameLayout>
