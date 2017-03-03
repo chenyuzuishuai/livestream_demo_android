@@ -1,11 +1,13 @@
 package cn.ucai.live.ui.activity;
 
 import android.app.Dialog;
+import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -13,13 +15,28 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import com.hyphenate.easeui.utils.EaseUserUtils;
+
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import butterknife.OnClick;
 import butterknife.Unbinder;
+import cn.ucai.live.I;
+import cn.ucai.live.LiveHelper;
 import cn.ucai.live.R;
+import cn.ucai.live.data.model.Gift;
+
+import static com.xiaomi.push.service.y.h;
+import static com.xiaomi.push.service.y.i;
+import static com.xiaomi.push.service.y.m;
 
 /**
  * Created by wei on 2016/7/25.
@@ -33,7 +50,9 @@ public class RoomGiftListDialog extends DialogFragment {
     TextView mTvMyBill;
     @BindView(R.id.tv_recharge)
     TextView mTvRecharge;
-
+    GridLayoutManager gm;
+    GiftAdapter mAdapter;
+    List<Gift> mGiftList = new ArrayList<>();
     private String username;
 
     public static RoomGiftListDialog newInstance() {
@@ -54,6 +73,20 @@ public class RoomGiftListDialog extends DialogFragment {
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+        gm = new GridLayoutManager(getContext(), 4);
+        mRvGift.setLayoutManager(gm);
+        mAdapter = new GiftAdapter(getContext(),mGiftList);
+        initData();
+    }
+
+    private void initData() {
+        Map<Integer, Gift> map = LiveHelper.getInstance().getAppGiftList();
+        Iterator<Map.Entry<Integer, Gift>> iterator = map.entrySet().iterator();
+        while (iterator.hasNext()){
+            Map.Entry<Integer, Gift> next = iterator.next();
+            Gift gift = next.getValue();
+            mGiftList.add(gift);
+        }
     }
 
 
@@ -92,5 +125,53 @@ public class RoomGiftListDialog extends DialogFragment {
     public void onDestroyView() {
         super.onDestroyView();
         unbinder.unbind();
+    }
+
+    class GiftAdapter extends RecyclerView.Adapter<GiftAdapter.GiftViewHolder> {
+        Context mContext;
+
+        public GiftAdapter(Context context, List<Gift> list) {
+            mContext = context;
+            mList = list;
+        }
+
+        List<Gift> mList;
+
+        @Override
+
+        public GiftViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+           GiftViewHolder holder= new GiftViewHolder(View.inflate(mContext, R.layout.item_gift, null));
+            return holder;
+        }
+
+        @Override
+        public void onBindViewHolder(GiftViewHolder holder, int position) {
+             Gift gift = mList.get(position);
+            holder.mTvGiftName.setText(gift.getGname());
+            holder.mTvGiftPrice.setText(String.valueOf(gift.getGprice()));
+            EaseUserUtils.setAPPUserAvatarByPath(mContext,gift.getGurl(),holder.mIvGiftThumb, I.TYPE_GIFT);
+            holder.mLayoutGift.setTag(gift.getId());
+        }
+
+        @Override
+        public int getItemCount() {
+            return mList != null ? mList.size() : 0;
+        }
+
+         class GiftViewHolder extends RecyclerView.ViewHolder {
+            @BindView(R.id.ivGiftThumb)
+            ImageView mIvGiftThumb;
+            @BindView(R.id.tvGiftName)
+            TextView mTvGiftName;
+            @BindView(R.id.tvGiftPrice)
+            TextView mTvGiftPrice;
+            @BindView(R.id.layout_gift)
+            LinearLayout mLayoutGift;
+
+            GiftViewHolder(View view) {
+                super(view);
+                ButterKnife.bind(this, view);
+            }
+        }
     }
 }

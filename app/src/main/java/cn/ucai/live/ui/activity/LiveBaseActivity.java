@@ -446,16 +446,23 @@ public abstract class LiveBaseActivity extends BaseActivity {
   }
 
   @OnClick(R.id.present_image) void onPresentImageClick() {
+    final RoomGiftListDialog dialog =
+            RoomGiftListDialog.newInstance();
+
+    dialog.show(getSupportFragmentManager(), "RoomGiftListDialog");
+
+  }
+
+  private void sentGiftMsg(){
     EMMessage message = EMMessage.createSendMessage(EMMessage.Type.CMD);
     message.setReceipt(chatroomId);
     EMCmdMessageBody cmdMessageBody = new EMCmdMessageBody(LiveConstants.CMD_GIFT);
-  message.addBody(cmdMessageBody);
+    message.addBody(cmdMessageBody);
     message.setAttribute(I.User.NICK, EaseUserUtils.getUserInfo(EMClient.getInstance().getCurrentUser()).getNick());
     message.setChatType(EMMessage.ChatType.ChatRoom);
     EMClient.getInstance().chatManager().sendMessage(message);
     showLeftGiftVeiw(message);
   }
-
   @OnClick(R.id.chat_image) void onChatImageClick() {
     ConversationListFragment fragment = ConversationListFragment.newInstance(anchorId, false);
     getSupportFragmentManager().beginTransaction()
