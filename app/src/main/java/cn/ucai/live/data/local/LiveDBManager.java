@@ -17,6 +17,7 @@ import java.util.Map;
 
 import cn.ucai.live.LiveApplication;
 import cn.ucai.live.LiveConstants;
+import cn.ucai.live.data.model.Gift;
 import cn.ucai.live.utils.L;
 
 import static com.hyphenate.chat.EMGCMListenerService.TAG;
@@ -207,16 +208,16 @@ public class LiveDBManager {
                 if (user.getMAvatarType() != null)
                     values.put(UserDao.USER_COLUMN_NAME_AVATAR_TYPE, user.getMAvatarType());
                 if (user.getMAvatarLastUpdateTime() !=null){
-                    values.put(UserDao.USER_COLUMN_NAME_AVATAR_LASTUPDATE_TIME,user.getMAvatarLastUpdateTime());
+                    values.put(UserDao.USER_COLUMN_NAME_AVATAR_UPDATE_TIME,user.getMAvatarLastUpdateTime());
                 }
                 db.replace(UserDao.USER_TABLE_NAME, null, values);
             }
         }
     }
 
+
     /**
      * get contact list
-     *
      * @return
      */
     synchronized public Map<String, User> getAPPContactList() {
@@ -227,12 +228,12 @@ public class LiveDBManager {
             while (cursor.moveToNext()) {
                 User user = new User();
                 user.setMUserName(cursor.getString(cursor.getColumnIndex(UserDao.USER_COLUMN_NAME)));
-                user.setMUserNick(cursor.getString(cursor.getColumnIndex(UserDao.USER_COLUMN_NICK)));
+                user.setMUserNick(cursor.getString(cursor.getColumnIndex(UserDao.USER_COLUMN_NAME_NICK)));
                 user.setMAvatarId(cursor.getInt(cursor.getColumnIndex(UserDao.USER_COLUMN_NAME_AVATAR_ID)));
                 user.setMAvatarPath(cursor.getString(cursor.getColumnIndex(UserDao.USER_COLUMN_NAME_AVATAR_PATH)));
                 user.setMAvatarSuffix(cursor.getString(cursor.getColumnIndex(UserDao.USER_COLUMN_NAME_AVATAR_SUFFIX)));
                 user.setMAvatarType(cursor.getInt(cursor.getColumnIndex(UserDao.USER_COLUMN_NAME_AVATAR_TYPE)));
-                user.setMAvatarLastUpdateTime(cursor.getString(cursor.getColumnIndex(UserDao.USER_COLUMN_NAME_AVATAR_LASTUPDATE_TIME)));
+                user.setMAvatarLastUpdateTime(cursor.getString(cursor.getColumnIndex(UserDao.USER_COLUMN_NAME_AVATAR_UPDATE_TIME)));
                 EaseCommonUtils.setAPPUserInitialLetter(user);
                 users.put(user.getMUserName(), user);
                 L.e(TAG,"Cursor user = " + user.getMUserName());
@@ -263,7 +264,7 @@ public class LiveDBManager {
         ContentValues values = new ContentValues();
         values.put(UserDao.USER_COLUMN_NAME, user.getMUserName());
         if(user.getMUserNick() != null)
-            values.put(UserDao.USER_COLUMN_NICK, user.getMUserNick());
+            values.put(UserDao.USER_COLUMN_NAME_NICK, user.getMUserNick());
         if(user.getMAvatarId() != null)
             values.put(UserDao.USER_COLUMN_NAME_AVATAR_ID ,user.getMAvatarId());
         if (user.getMAvatarPath() !=null)
@@ -273,10 +274,82 @@ public class LiveDBManager {
         if (user.getMAvatarType() != null)
             values.put(UserDao.USER_COLUMN_NAME_AVATAR_TYPE, user.getMAvatarType());
         if (user.getMAvatarLastUpdateTime() !=null)
-            values.put(UserDao.USER_COLUMN_NAME_AVATAR_LASTUPDATE_TIME,user.getMAvatarLastUpdateTime());
+            values.put(UserDao.USER_COLUMN_NAME_AVATAR_UPDATE_TIME,user.getMAvatarLastUpdateTime());
 
             if(db.isOpen()){
             db.replace(UserDao.USER_TABLE_NAME, null, values);
         }
+    }
+
+    /**
+     * save a contact
+     * @param user
+     */
+    synchronized public void saveAppContact(User user){
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(UserDao.USER_COLUMN_NAME, user.getMUserName());
+        if(user.getMUserNick() != null)
+            values.put(UserDao.USER_COLUMN_NAME_NICK, user.getMUserNick());
+        if(user.getMAvatarId() != null)
+            values.put(UserDao.USER_COLUMN_NAME_AVATAR_ID, user.getMAvatarId());
+        if(user.getMAvatarPath() != null)
+            values.put(UserDao.USER_COLUMN_NAME_AVATAR_PATH, user.getMAvatarPath());
+        if(user.getMAvatarSuffix() != null)
+            values.put(UserDao.USER_COLUMN_NAME_AVATAR_SUFFIX, user.getMAvatarSuffix());
+        if(user.getMAvatarType() != null)
+            values.put(UserDao.USER_COLUMN_NAME_AVATAR_TYPE, user.getMAvatarType());
+        if(user.getMAvatarLastUpdateTime() != null)
+            values.put(UserDao.USER_COLUMN_NAME_AVATAR_UPDATE_TIME, user.getMAvatarLastUpdateTime());
+        if(db.isOpen()){
+            db.replace(UserDao.USER_TABLE_NAME, null, values);
+        }
+    }
+
+    /**
+     * save gift list
+     *
+     * @param giftList
+     */
+    synchronized public void saveAppGiftList(List<Gift> giftList) {
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+        if (db.isOpen()) {
+            db.delete(UserDao.GIFT_TABLE_NAME, null, null);
+            for (Gift gift:giftList) {
+                ContentValues values = new ContentValues();
+                if(gift.getId() != null)
+                    values.put(UserDao.GIFT_COLUMN_ID, gift.getId());
+                if(gift.getGname() != null)
+                    values.put(UserDao.GIFT_COLUMN_NAME, gift.getGname());
+                if(gift.getGurl() != null)
+                    values.put(UserDao.GIFT_COLUMN_URL, gift.getGurl());
+                if(gift.getGprice() != null)
+                    values.put(UserDao.GIFT_COLUMN_PRICE, gift.getGprice());
+                db.replace(UserDao.GIFT_TABLE_NAME, null, values);
+            }
+        }
+    }
+
+    /**
+     * get gift list
+     *
+     * @return
+     */
+    synchronized public Map<Integer, Gift> getAppGiftList() {
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+        Map<Integer, Gift> gifts = new Hashtable<Integer, Gift>();
+        if (db.isOpen()) {
+            Cursor cursor = db.rawQuery("select * from " + UserDao.GIFT_TABLE_NAME /* + " desc" */, null);
+            while (cursor.moveToNext()) {
+                Gift gift = new Gift();
+                gift.setId(cursor.getInt(cursor.getColumnIndex(UserDao.GIFT_COLUMN_ID)));
+                gift.setGprice(cursor.getInt(cursor.getColumnIndex(UserDao.GIFT_COLUMN_PRICE)));
+                gift.setGname(cursor.getString(cursor.getColumnIndex(UserDao.GIFT_COLUMN_NAME)));
+                gift.setGurl(cursor.getString(cursor.getColumnIndex(UserDao.GIFT_COLUMN_URL)));
+                gifts.put(gift.getId(),gift);
+            }
+            cursor.close();
+        }
+        return gifts;
     }
 }
