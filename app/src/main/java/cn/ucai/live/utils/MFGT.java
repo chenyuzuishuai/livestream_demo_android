@@ -9,6 +9,7 @@ import com.hyphenate.easeui.domain.User;
 
 import cn.ucai.live.I;
 import cn.ucai.live.R;
+import cn.ucai.live.ui.activity.ChangeActivity;
 import cn.ucai.live.ui.activity.ChatActivity;
 import cn.ucai.live.ui.activity.LoginActivity;
 import cn.ucai.live.ui.activity.MainActivity;
@@ -35,17 +36,24 @@ public class MFGT {
     }
 
     public static void gotoChat(Activity activity, String userName) {
-        startActivity(activity,new Intent(activity, ChatActivity.class)
-        .putExtra("userId",userName));
+        startActivity(activity, new Intent(activity, ChatActivity.class)
+                .putExtra("userId", userName));
     }
 
-    public static void gotoMain(Activity activity){
-        startActivity(activity, new Intent(activity,MainActivity.class)
-        .putExtra(I.BACK_MAIN_FROM_CHAT,true));
+    public static void gotoMain(Activity activity) {
+        startActivity(activity, new Intent(activity, MainActivity.class)
+                .putExtra(I.BACK_MAIN_FROM_CHAT, true));
     }
+
     //清空Task方法
     public static void gotoLoginCleanTask(Activity activity) {
         startActivity(activity, new Intent(activity, LoginActivity.class)
                 .setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK));
     }
+
+    //前往钱包界面
+    public static void gotoChangeActivity(Activity activity) {
+        startActivity(activity, ChangeActivity.class);
+    }
+
 }

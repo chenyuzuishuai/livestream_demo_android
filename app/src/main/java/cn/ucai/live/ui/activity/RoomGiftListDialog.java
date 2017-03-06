@@ -22,6 +22,8 @@ import android.widget.TextView;
 import com.hyphenate.easeui.utils.EaseUserUtils;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -75,29 +77,31 @@ public class RoomGiftListDialog extends DialogFragment {
         super.onActivityCreated(savedInstanceState);
         gm = new GridLayoutManager(getContext(), 4);
         mRvGift.setLayoutManager(gm);
-        mAdapter = new GiftAdapter(getContext(),mGiftList);
+        mAdapter = new GiftAdapter(getContext(), mGiftList);
         initData();
     }
 
     private void initData() {
         Map<Integer, Gift> map = LiveHelper.getInstance().getAppGiftList();
         Iterator<Map.Entry<Integer, Gift>> iterator = map.entrySet().iterator();
-        while (iterator.hasNext()){
+        while (iterator.hasNext()) {
             Map.Entry<Integer, Gift> next = iterator.next();
             Gift gift = next.getValue();
             mGiftList.add(gift);
         }
+        Collections.sort(mGiftList, new Comparator<Gift>() {
+            @Override
+            public int compare(Gift lhs, Gift rhs) {
+                return lhs.getGprice().compareTo(rhs.getGprice());
+            }
+        });
+        mAdapter.notifyDataSetChanged();
     }
 
+    private View.OnClickListener mListener;
 
-    private UserDetailsDialogListener dialogListener;
-
-    public void setUserDetailsDialogListener(UserDetailsDialogListener dialogListener) {
-        this.dialogListener = dialogListener;
-    }
-
-    interface UserDetailsDialogListener {
-        void onMentionClick(String username);
+    public void setGiftOnClickListener(View.OnClickListener listener) {
+        this.mListener = listener;
     }
 
 
@@ -140,16 +144,16 @@ public class RoomGiftListDialog extends DialogFragment {
         @Override
 
         public GiftViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-           GiftViewHolder holder= new GiftViewHolder(View.inflate(mContext, R.layout.item_gift, null));
+            GiftViewHolder holder = new GiftViewHolder(View.inflate(mContext, R.layout.item_gift, null));
             return holder;
         }
 
         @Override
         public void onBindViewHolder(GiftViewHolder holder, int position) {
-             Gift gift = mList.get(position);
+            Gift gift = mList.get(position);
             holder.mTvGiftName.setText(gift.getGname());
             holder.mTvGiftPrice.setText(String.valueOf(gift.getGprice()));
-            EaseUserUtils.setAPPUserAvatarByPath(mContext,gift.getGurl(),holder.mIvGiftThumb, I.TYPE_GIFT);
+            EaseUserUtils.setAPPUserAvatarByPath(mContext, gift.getGurl(), holder.mIvGiftThumb, I.TYPE_GIFT);
             holder.mLayoutGift.setTag(gift.getId());
         }
 
@@ -158,7 +162,7 @@ public class RoomGiftListDialog extends DialogFragment {
             return mList != null ? mList.size() : 0;
         }
 
-         class GiftViewHolder extends RecyclerView.ViewHolder {
+        class GiftViewHolder extends RecyclerView.ViewHolder {
             @BindView(R.id.ivGiftThumb)
             ImageView mIvGiftThumb;
             @BindView(R.id.tvGiftName)
@@ -171,6 +175,7 @@ public class RoomGiftListDialog extends DialogFragment {
             GiftViewHolder(View view) {
                 super(view);
                 ButterKnife.bind(this, view);
+                mLayoutGift.setOnClickListener(mListener);
             }
         }
     }

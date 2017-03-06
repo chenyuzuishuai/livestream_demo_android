@@ -231,4 +231,15 @@ public class NetDao {
                 .targetClass(String.class)
                 .execute(listener);
     }
+
+    /**
+     * 获取零钱
+     */
+    public static void loadChange(Context context ,String username, OnCompleteListener<String> listener){
+        OkHttpUtils<String> utils = new OkHttpUtils<>(context);
+        utils.setRequestUrl(I.REQUEST_BALANCE)
+                .addParam("uname",username)
+                .targetClass(String.class)
+                .execute(listener);
+    }
 }
